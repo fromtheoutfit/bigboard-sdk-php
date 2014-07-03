@@ -2,9 +2,28 @@
     "name": "fromtheoutfit/bigboard-sdk-php",
     "description": "PHP SDK for bigboard.us",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "The Outfit, Inc.",
+            "email": "hello@fromtheoutfit.com"
+        },
+        {
+            "name": "Brenden Tamilio",
+            "email": "bren@fromtheoutfit.com"
+        }
+
+    ],
     "require": {
         "php": ">=5.3.0",
-	"guzzle/guzzle": "3.x",
+		"guzzle/guzzle": "3.x"
+    },
+    "autoload": {
+    	"psr-0": {
+    		"BigBoardSDK": "src/"
+    	},
+        "classmap": [
+            "src/"
+        ]
     },
     "minimum-stability": "dev"
 }
