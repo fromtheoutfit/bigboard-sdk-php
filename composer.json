@@ -1,0 +1,10 @@
+{
+    "name": "fromtheoutfit/bigboard-sdk-php",
+    "description": "PHP SDK for bigboard.us",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+	"guzzle/guzzle": "3.x",
+    },
+    "minimum-stability": "dev"
+}
