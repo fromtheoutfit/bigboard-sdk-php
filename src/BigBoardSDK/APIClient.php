@@ -12,7 +12,6 @@ class APIClient extends \Guzzle\Http\Client  {
 
 		$this->setBaseUrl($url);
 		$this->setSslVerification(false, false, false);
-		
 		$this->setUserAgent("BigBoardSDK/0.1");
 		
 		$this->setDefaultOption('headers', 
@@ -26,37 +25,37 @@ class APIClient extends \Guzzle\Http\Client  {
 	}
 
  	
- 	public function checkAuth ()
+ 	public function getCheckAuth ()
  	{
-
-		$resp = $this->fetch_endpoint('/api/check_auth');
-		return (isset($resp->status) && ($resp->status == "success")) ? true : false;
+		return $this->getEndpoint('/api/check_auth');
 	}
 
 
  	public function getWhoAmI ()
  	{
-		$resp = $this->fetch_endpoint('/api/whoami');
-		return $resp->result;
+		return $this->getEndpoint('/api/whoami');
 	}
 
 
  	public function sendEvents ($events)
  	{
- 		$events = json_encode($events);
+		return json_decode($this->post('/api')->setBody(json_encode(array("events" => $events)))->send());
+ 	} 
 
-		$req = $this->post('/api');
-		$req->setBody($events);
-		$resp = $req->send();
-		return json_decode($resp->getBody());
+ 	public function sendEvent ($event)
+ 	{
+		return json_decode($this->post('/api/event')->setBody(json_encode($event))->send()->getBody());
  	} 
 
 
- 	protected function fetch_endpoint ($url)
+ 	protected function getEndpoint ($url)
  	{
-		$req = $this->get($url);
-		$resp = $req->send();
-		return json_decode($resp->getBody());
+ 		$resp = $this->get($url)->send();
+
+print_r($resp->getBody());
+exit;
+// 		if ($resp)
+//		return json_decode();
  	}
 
 
