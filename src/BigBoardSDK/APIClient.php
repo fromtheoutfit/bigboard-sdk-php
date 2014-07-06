@@ -3,6 +3,7 @@
 namespace BigBoardSDK;
 
  
+ 
 class APIClient extends \Guzzle\Http\Client  {
 
 
@@ -21,43 +22,94 @@ class APIClient extends \Guzzle\Http\Client  {
 					 )
 		);
 
+		$client->getEventDispatcher()->addListener('request.error', function(Event $event) {
 	
 	}
 
  	
  	public function getCheckAuth ()
  	{
-		return $this->getEndpoint('/api/check_auth');
+		return $this->fetchEndpoint('/api/check_auth');
 	}
 
 
  	public function getWhoAmI ()
  	{
-		return $this->getEndpoint('/api/whoami');
+		return $this->fetchEndpoint('/api/whoami');
 	}
 
 
  	public function sendEvents ($events)
  	{
-		return json_decode($this->post('/api')->setBody(json_encode(array("events" => $events)))->send());
+ 		return $this->fetchEndpoint('/api/event', json_encode(array("events" => $events)));
  	} 
 
  	public function sendEvent ($event)
  	{
-		return json_decode($this->post('/api/event')->setBody(json_encode($event))->send()->getBody());
+		return $this->fetchEndpoint('/api/event', json_encode($event));
  	} 
 
 
- 	protected function getEndpoint ($url)
+ 	protected function fetchEndpoint ($url, $method="get", $body=null)
  	{
- 		$resp = $this->get($url)->send();
+ 		
 
-print_r($resp->getBody());
-exit;
-// 		if ($resp)
-//		return json_decode();
+		if ($method == "post")
+		{
+			$req = $this->post($url);
+			
+			if (!is_null($body))
+			{
+			 	$req->setBody($body);
+			}
+ 			$resp = $this->post($url);
+		}
+		else
+		{
+ 			$resp = $this->get($url);
+		}
+
+
+	//	try 
+	//	{
+		    $resp->send();
+	//	} 
+		// catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) 
+		// {
+		// 	return $this->errorHandler($e, $url, "client_error");
+		// }
+		// catch (\Guzzle\Http\Exception\BadResponseException $e) 
+		// {
+		// 	return $this->errorHandler($e, $url, "bad_response");
+		// }
+		// catch (\Guzzle\Http\Exception\ServerErrorResponseException $e)
+		// {
+		// 	return $this->errorHandler($e, $url, "server_error");
+		// }
+		// catch (\Guzzle\Http\Exception\CurlException $e) 
+		// {
+		// 	return $this->errorHandler($e, $url, "curl_error");
+		// }
+    
+       return $resp->json();
+
  	}
 
+ 
+ 	protected function errorHandler ($e, $url, $type)
+ 	{
+
+ 		$methods_avail = get_class_methods($e);
+
+ 		return array(
+	 				"error" => array (
+	 					"type"		=> $type,
+	 					"url"		=> $url,
+			 			"message"	=> (in_array("getMessage", $methods_avail)) ? $e->getMessage() : null,
+	 				)
+ 				);
+
+ 	}
 
 
 }
