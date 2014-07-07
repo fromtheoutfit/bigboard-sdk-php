@@ -2,11 +2,21 @@
 
 namespace BigBoardSDK;
 
- 
+
+use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Exception\CurlException;
+
  
 class APIClient extends \Guzzle\Http\Client  {
 
-
+ 
+   /*
+	* Instantiate APIClient.
+	*
+	* @param 	string  	$api_key 		
+	* @param 	string|null $url		
+	* @return 	void
+	*/	
 	public function __construct($api_key, $url='https://bigboard.us')
 	{
 		parent::__construct();
@@ -22,95 +32,120 @@ class APIClient extends \Guzzle\Http\Client  {
 					 )
 		);
 
-		$client->getEventDispatcher()->addListener('request.error', function(Event $event) {
-	
 	}
 
- 	
+
+   /*
+	* Check if authentication is valid.
+	*
+	* @return 	array
+	*/	
  	public function getCheckAuth ()
  	{
 		return $this->fetchEndpoint('/api/check_auth');
 	}
 
 
+   /*
+	* Return information about authenticated account.
+	*
+	* @return 	array
+	*/
  	public function getWhoAmI ()
  	{
 		return $this->fetchEndpoint('/api/whoami');
 	}
 
 
+   /*
+	* Send multiple events.
+	*
+	* @param 	array 	$events
+	* @return 	array
+	*/
  	public function sendEvents ($events)
  	{
- 		return $this->fetchEndpoint('/api/event', json_encode(array("events" => $events)));
+ 		return $this->fetchEndpoint('/api', "post", json_encode(array("events" => $events)));
  	} 
 
+
+   /*
+	* Send a single event.
+	*
+	* @param 	array 	$event
+	* @return 	array
+	*/
  	public function sendEvent ($event)
  	{
-		return $this->fetchEndpoint('/api/event', json_encode($event));
+		return $this->fetchEndpoint('/api/event', "post", json_encode($event));
  	} 
 
 
+   /*
+	* Fetch URL, return response in standard format. Trap errors (if present).
+	*
+	* @param 	string 	$url
+	* @param 	string 	$method
+	* @param 	string 	$body
+	* @return 	array
+	*/
  	protected function fetchEndpoint ($url, $method="get", $body=null)
  	{
- 		
+ 		$result = array();
 
 		if ($method == "post")
 		{
-			$req = $this->post($url);
+			$request = $this->post($url);
 			
 			if (!is_null($body))
 			{
-			 	$req->setBody($body);
+			 	$request->setBody($body);
 			}
- 			$resp = $this->post($url);
 		}
 		else
 		{
- 			$resp = $this->get($url);
+ 			$request = $this->get($url);
 		}
+ 		
 
+		//
+ 		// Error Handling
+ 		//
 
-	//	try 
-	//	{
-		    $resp->send();
-	//	} 
-		// catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) 
-		// {
-		// 	return $this->errorHandler($e, $url, "client_error");
-		// }
-		// catch (\Guzzle\Http\Exception\BadResponseException $e) 
-		// {
-		// 	return $this->errorHandler($e, $url, "bad_response");
-		// }
-		// catch (\Guzzle\Http\Exception\ServerErrorResponseException $e)
-		// {
-		// 	return $this->errorHandler($e, $url, "server_error");
-		// }
-		// catch (\Guzzle\Http\Exception\CurlException $e) 
-		// {
-		// 	return $this->errorHandler($e, $url, "curl_error");
-		// }
-    
-       return $resp->json();
+ 		try 
+ 		{	
+ 			$response = $request->send();		
+			$result = json_decode($response->getBody(), true);
+		} 
+		catch (ClientErrorResponseException $e) 
+		{
+			$result = json_decode($e->getResponse()->getBody(), true);
+		}
+		catch (CurlException $e) 
+		{
+			$result = array(
+					"error" => $e->getMessage(),
+					"status" => "bad_request",
+			);
+        }
+        catch (Exception $e) 
+        {
+      		$result = array(
+					"error" => $e->getMessage(),
+					"status" => "critical_error",
+			);  	
+        }
+
+        if (!isset($result["status"]))
+        {
+      		$result = array(
+					"error" => "Unexpected response from server. Check URL?",
+					"status" => "critical_error",
+			);  	
+        }
+
+        return $result;
 
  	}
-
- 
- 	protected function errorHandler ($e, $url, $type)
- 	{
-
- 		$methods_avail = get_class_methods($e);
-
- 		return array(
-	 				"error" => array (
-	 					"type"		=> $type,
-	 					"url"		=> $url,
-			 			"message"	=> (in_array("getMessage", $methods_avail)) ? $e->getMessage() : null,
-	 				)
- 				);
-
- 	}
-
 
 }
-
