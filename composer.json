@@ -15,12 +15,12 @@
     ],
     "require": {
         "php": ">=5.3.0",
-		"guzzle/guzzle": "3.x"
+        "guzzle/guzzle": "3.x"
     },
     "autoload": {
-    	"psr-0": {
-    		"BigBoardSDK": "src/"
-    	},
+        "psr-0": {
+            "BigBoardSDK": "src/"
+        },
         "classmap": [
             "src/"
         ]
