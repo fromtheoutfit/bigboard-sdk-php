@@ -4,7 +4,7 @@ This SDK provides a simple interface to the [BigBoard API] (https://bigboard.us/
 
 
 ##Installation
-Installation via [Composer] (http://getcomposer.org) is recommended; update composer.json file to include the BigBoard SDK:
+Installation via [Composer] (http://getcomposer.org) is recommended; update your project's composer.json file to include the BigBoard SDK:
 ```javascript
 {
     "require": {
@@ -20,8 +20,8 @@ require 'vendor/autoload.php';
 
 // See BigBoard's service settings UI. 
 // Connect an App and paste your token here:
-
 $api_key = "<Your API Access Token Here>";
+
 
 $client = new BigBoardSDK\APIClient ($api_key);
 
