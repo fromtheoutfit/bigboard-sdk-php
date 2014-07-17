@@ -1,9 +1,9 @@
-##BigBoard SDK for PHP
+#BigBoard SDK for PHP
 
 This SDK provides a simple interface to the [BigBoard API] (https://bigboard.us/api). [BigBoard] (https://bigboard.us/) is a web based service that aggredates point-in-time events from other web based services (and custom events) into a visually pleasing dashboard, allowing you to see what's really happening.
 
 
-###Installation
+##Installation
 Installation via [Composer] (http://getcomposer.org) is recommended:
 
 ```bash
@@ -21,7 +21,7 @@ Update your project's composer.json file to include the BigBoard SDK:
 ```
 
 
-###Basic Usage
+##Basic Usage
 
 ```php
 
@@ -64,7 +64,7 @@ var_export ($status);
 
 ```
 
-###Documentation
+##Documentation
 More information on the BigBoard API is available at https://bigboard.us/api.
 
 
