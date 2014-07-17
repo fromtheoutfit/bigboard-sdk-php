@@ -1,11 +1,5 @@
 /vendor/
+composer.phar
 composer.lock
 test.php
-.idea/.name
-.idea/bigboard-sdk-php.iml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/workspace.xml
-.idea/scopes/scope_settings.xml
+.idea/*
