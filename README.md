@@ -4,14 +4,7 @@ This SDK provides a simple interface to the [BigBoard API] (https://bigboard.us/
 
 
 ##Installation
-Installation via [Composer] (http://getcomposer.org) is recommended:
-
-```bash
-curl -sS https://getcomposer.org/installer | php
-```
-
-Update your project's composer.json file to include the BigBoard SDK:
-
+Installation via [Composer] (http://getcomposer.org) is recommended; update composer.json file to include the BigBoard SDK:
 ```javascript
 {
     "require": {
@@ -20,9 +13,7 @@ Update your project's composer.json file to include the BigBoard SDK:
 }
 ```
 
-
 ##Basic Usage
-
 ```php
 
 require 'vendor/autoload.php';
@@ -61,7 +52,6 @@ $events = array (
 
 $status = $client->sendEvents($events);
 var_export ($status);
-
 ```
 
 ##Documentation
