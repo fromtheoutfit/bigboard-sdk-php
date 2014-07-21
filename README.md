@@ -8,7 +8,7 @@ Installation via [Composer] (http://getcomposer.org) is highly recommended; upda
 ```javascript
 {
     "require": {
-        "btamilio/bigboard-php-sdk": "*"
+        "bigboard/bigboard-php-sdk": "*"
     }
 }
 ```
