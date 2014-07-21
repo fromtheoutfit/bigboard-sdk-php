@@ -45,8 +45,7 @@ $events = array (
 	    "summary" => "Report Rejected. Comment: Please include cover sheet. Mmmmkay?",
 	    "time" => time(),
 	    "label" => "TPS Reports",
-	    "summary": "Rejected (reason: missing cover sheet)",
-        "url": "http://www.youtube.com/watch?v=Fy3rjQGc6lA"
+            "url": "http://www.youtube.com/watch?v=Fy3rjQGc6lA"
 	),
 
 
