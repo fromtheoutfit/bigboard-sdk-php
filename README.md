@@ -10,7 +10,7 @@ Installation via [Composer] (http://getcomposer.org) is highly recommended; upda
 ```javascript
 {
     "require": {
-        "bigboard/bigboard-php-sdk": "*"
+        "fromtheoutfit/bigboard-sdk-php": "dev-master"
     }
 }
 ```
@@ -58,8 +58,3 @@ var_export ($status);
 
 ##Documentation
 More information on the BigBoard API is available at https://bigboard.us/api.
-
-
- 
- 
- 
